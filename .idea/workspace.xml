@@ -2,11 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="da1da2e7-5086-413f-931e-f2d00126a6a8" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/components/SignUp/index.js" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/App.js" afterPath="$PROJECT_DIR$/App.js" />
-      <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change beforePath="$PROJECT_DIR$/src/components/Login/index.js" afterPath="$PROJECT_DIR$/src/components/Login/index.js" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/analytics.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/css_BksDKdfdQK3-YpAoZ0cxqbLv6QoVoP9G-dCDYCQ-2m8.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/css_FXQ-wDJ4h9BIqybd7WspRnWNQjtQGrxInpQU94f5YeA.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/css_kShW4RPmRstZ3SpIC-ZvVGNFVAi0WEMuCnI0ZkYIaFw.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/css_qhIiO4jJ4aaO0rS2FE3xTCUevrCUKBRcZUWynTti9dM.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/drawtexture.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/farewell.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/heviz.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/js_10LJu3QGypON6M-3Ax-qiv8T6iLbQH5OYAZvKnuiR-8.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/js_ckP-uHN0q8ZkePBWgeVu0t6iMd4SZOmGpoEcsRZmb7k.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/js_jpJjaUC0z8JMIyav5oQrYykDRUb64rpaUDpB4Y9aklU.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/js_ypZlxtIXc21PaSh9sA5xBuq3vaNRdOjGQtNYVqRj2x8.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Events | ESN BME_fitxers/web_logo_0_0.png" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -327,16 +335,15 @@
       <updated>1542045314005</updated>
       <workItem from="1542045316725" duration="4131000" />
       <workItem from="1542130621337" duration="3586000" />
-      <workItem from="1542207077457" duration="12673000" />
+      <workItem from="1542207077457" duration="12816000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20390000" />
+    <option name="totallyTimeSpent" value="20533000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="87" y="98" width="1303" height="780" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -360,7 +367,7 @@
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33009708" sideWeight="0.49721116" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24940239" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24940239" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -531,6 +538,19 @@
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Events | ESN BME_fitxers/analytics.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Events | ESN BME_fitxers/farewell.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
   </component>
