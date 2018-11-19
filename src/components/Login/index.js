@@ -1,4 +1,5 @@
 import React from 'react';
+import * as firebase from 'firebase';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
 
 export default class Login extends React.Component {
@@ -11,25 +12,48 @@ export default class Login extends React.Component {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            response: ''
         }
+        this.Login = this.Login.bind(this)
+        this.onButtonPressed = this.onButtonPressed.bind(this)
     };
 
+    async Login() {
+        try {
+            await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+            this.setState({
+                response: 'user login in !'
+            })
+            setTimeout(() => {
+                this.props.navigation.navigate('Login')
+            }, 1500)
+
+        } catch(error) {
+            this.setState({
+                response: error.toString()
+            })
+        }
+    }
+
     onButtonPressed() {
-        this.props.navigation.navigate('SignUp')
+        this.Login()
+
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>ESN app</Text>
+                <Text style={styles.title}>ESN app {this.state.response}</Text>
                 <Image source={require('../../img/esn.png')}/>
                 <TextInput  style={{height: 50, fontSize: 30}}
                             placeholder="E-mail"
                             onChangeText={(email) => this.setState({email})}/>
                 <TextInput  style={{height: 50, fontSize: 30}}
                             placeholder="Password"
-                            onChangeText={(password) => this.setState({password})}/>
+                            onChangeText={(password) => this.setState({password})}
+                            secureTextEntry={true}
+                />
                 <TouchableOpacity
                     style={styles.button}
                     onPress={this.onButtonPressed.bind(this)}

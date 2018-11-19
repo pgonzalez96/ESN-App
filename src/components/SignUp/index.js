@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert, TouchableOpacity} from 'react-native';
+import * as firebase from "firebase";
 
 export default class SignUp extends React.Component {
 
@@ -13,27 +14,48 @@ export default class SignUp extends React.Component {
             password: '',
             password2: ''
         }
+        this.onButtonPressed = this.onButtonPressed.bind(this)
+        this.Signup = this.Signup.bind(this)
     };
+
+    async Signup() {
+        try {
+            await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+            this.setState({
+                response: 'account created!'
+            })
+            setTimeout(() => {
+                this.props.navigation.navigate('Login')
+            }, 1500)
+
+        } catch(error) {
+            this.setState({
+                response: error.toString()
+            })
+        }
+    }
 
     onButtonPressed() {
         if (this.state.name === '' || this.state.surname === '' || this.state.email === '' || this.state.email2 === '' || this.state.password === '' || this.state.password2 === '') {
-            Alert.alert('You must enter all the fields')
+            Alert.alert('Error','You must enter all the fields')
         }
         else if (this.state.email !== this.state.email2) {
-            Alert.alert('E-mails are not equal')
+            Alert.alert('Error','E-mails are not equal')
         }
         else if (this.state.password !== this.state.password2) {
-            Alert.alert('Passwords are not equal')
+            Alert.alert('Error','Passwords are not equal')
         }
         else {
-            this.props.navigation.navigate('Login')
+            Alert.alert('Welcome!','You have successfully registered', [
+                {text: 'OK', onPress: this.Signup},
+            ])
         }
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Sign Up</Text>
+                <Text style={styles.title}>Sign Up {this.state.response}</Text>
                 <TextInput  style={styles.inputs}
                             placeholder="Name"
                             onChangeText={(name) => this.setState({name})}/>
@@ -42,19 +64,27 @@ export default class SignUp extends React.Component {
                             onChangeText={(surname) => this.setState({surname})}/>
                 <TextInput  style={styles.inputs}
                             placeholder="E-mail"
-                            onChangeText={(email) => this.setState({email})}/>
+                            onChangeText={(email) => this.setState({email})}
+                            type = "email"
+                />
                 <TextInput  style={styles.inputs}
                             placeholder="Confirm e-mail"
-                            onChangeText={(email2) => this.setState({email2})}/>
+                            onChangeText={(email2) => this.setState({email2})}
+                            type = "email"
+                />
                 <TextInput  style={styles.inputs}
                             placeholder="Password"
-                            onChangeText={(password) => this.setState({password})}/>
+                            onChangeText={(password) => this.setState({password})}
+                            secureTextEntry={true}
+                />
                 <TextInput  style={styles.inputs}
                             placeholder="Confirm password"
-                            onChangeText={(password2) => this.setState({password2})}/>
+                            onChangeText={(password2) => this.setState({password2})}
+                            secureTextEntry={true}
+                />
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={this.onButtonPressed.bind(this)}
+                    onPress={this.onButtonPressed}
                 >
                     <Text style={{color: '#fff', fontSize: 25}}>Sign Up</Text>
                 </TouchableOpacity>
