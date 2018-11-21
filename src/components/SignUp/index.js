@@ -21,19 +21,17 @@ export default class SignUp extends React.Component {
     async Signup() {
         let data = {'name': this.state.name, 'surname': this.state.surname, 'email': this.state.email}
         try {
-            await firebase.database().ref('/users/'+this.state.name + this.state.surname).set(data)
             await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            this.setState({
-                response: 'account created!'
-            })
-            setTimeout(() => {
-                this.props.navigation.navigate('Login')
-            }, 1500)
-
+            await firebase.database().ref('/users/'+this.state.name + this.state.surname).set(data)
+            Alert.alert('Welcome!','You have successfully registered', [
+                {text: 'OK', onPress: this.props.navigation.navigate('Login')},
+            ])
         } catch(error) {
             this.setState({
                 response: error.toString()
             })
+            Alert.alert('Error', this.state.response)
+
         }
     }
 
@@ -48,16 +46,14 @@ export default class SignUp extends React.Component {
             Alert.alert('Error','Passwords are not equal')
         }
         else {
-            Alert.alert('Welcome!','You have successfully registered', [
-                {text: 'OK', onPress: this.Signup},
-            ])
+            this.Signup()
         }
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Sign Up {this.state.response}</Text>
+                <Text style={styles.title}>Sign Up</Text>
                 <TextInput  style={styles.inputs}
                             placeholder="Name"
                             onChangeText={(name) => this.setState({name})}/>
