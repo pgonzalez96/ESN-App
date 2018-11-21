@@ -22,9 +22,7 @@ export default class Login extends React.Component {
     async Login() {
         try {
             await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-            Alert.alert('Congratulations', 'You can sign in')
-
-
+            this.props.navigation.navigate('MainView')
         } catch(error) {
             this.setState({
                 response: error.toString()

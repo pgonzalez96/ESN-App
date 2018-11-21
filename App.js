@@ -3,6 +3,7 @@ import {createStackNavigator} from 'react-navigation';
 import Login from './src/components/Login';
 import SignUp from './src/components/SignUp';
 import Firebase from './src/api';
+import MainView from './src/components/MainView';
 import * as firebase from 'firebase'
 
 export default class App extends React.Component {
@@ -44,7 +45,8 @@ export default class App extends React.Component {
 
 const AppStackNavigator = createStackNavigator({
     Login: Login,
-    SignUp: SignUp
+    SignUp: SignUp,
+    MainView: MainView
 
 })
 
