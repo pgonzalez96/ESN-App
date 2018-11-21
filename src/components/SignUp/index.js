@@ -21,10 +21,10 @@ export default class SignUp extends React.Component {
     };
 
     async Signup() {
-        let data = {'name': this.state.name, 'surname': this.state.surname, 'email': this.state.email}
+        let data = {'name': this.state.name, 'surname': this.state.surname, 'birth_date': this.state.date, 'email': this.state.email}
         try {
             await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            await firebase.database().ref('/users/'+this.state.name + this.state.surname + this.state.date).set(data)
+            await firebase.database().ref('users/').push(data)
             Alert.alert('Welcome!','You have successfully registered', [
                 {text: 'OK', onPress: this.props.navigation.navigate('Login')},
             ])
