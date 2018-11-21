@@ -1,6 +1,6 @@
 import React from 'react';
 import * as firebase from 'firebase';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert} from 'react-native';
 
 export default class Login extends React.Component {
 
@@ -22,17 +22,14 @@ export default class Login extends React.Component {
     async Login() {
         try {
             await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-            this.setState({
-                response: 'user login in !'
-            })
-            setTimeout(() => {
-                this.props.navigation.navigate('Login')
-            }, 1500)
+            Alert.alert('Congratulations', 'You can sign in')
+
 
         } catch(error) {
             this.setState({
                 response: error.toString()
             })
+            Alert.alert('Error', this.state.response)
         }
     }
 
@@ -44,7 +41,7 @@ export default class Login extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>ESN app {this.state.response}</Text>
+                <Text style={styles.title}>ESN app</Text>
                 <Image source={require('../../img/esn.png')}/>
                 <TextInput  style={{height: 50, fontSize: 30}}
                             placeholder="E-mail"
