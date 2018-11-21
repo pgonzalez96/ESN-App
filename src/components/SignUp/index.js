@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, Alert, TouchableOpacity} from 'react-native';
 import * as firebase from "firebase";
+import DatePicker from 'react-native-datepicker';
 
 export default class SignUp extends React.Component {
 
@@ -9,6 +10,7 @@ export default class SignUp extends React.Component {
         this.state = {
             name: '',
             surname: '',
+            date: '',
             email: '',
             email2: '',
             password: '',
@@ -22,7 +24,7 @@ export default class SignUp extends React.Component {
         let data = {'name': this.state.name, 'surname': this.state.surname, 'email': this.state.email}
         try {
             await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            await firebase.database().ref('/users/'+this.state.name + this.state.surname).set(data)
+            await firebase.database().ref('/users/'+this.state.name + this.state.surname + this.state.date).set(data)
             Alert.alert('Welcome!','You have successfully registered', [
                 {text: 'OK', onPress: this.props.navigation.navigate('Login')},
             ])
@@ -60,6 +62,29 @@ export default class SignUp extends React.Component {
                 <TextInput  style={styles.inputs}
                             placeholder="Surname"
                             onChangeText={(surname) => this.setState({surname})}/>
+                <DatePicker
+                    style={{width: 300}}
+                    date={this.state.date}
+                    mode="date"
+                    placeholder="Birth date"
+                    format="DD-MM-YYYY"
+                    minDate="01-11-1940"
+                    maxDate="01-11-2000"
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    customStyles={{
+                        dateIcon: {
+                            position: 'absolute',
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0
+                        },
+                        dateInput: {
+                            marginLeft: 36
+                        }
+                    }}
+                    onDateChange={(date) => {this.setState({date: date})}}
+                />
                 <TextInput  style={styles.inputs}
                             placeholder="E-mail"
                             onChangeText={(email) => this.setState({email})}
