@@ -19,6 +19,12 @@ export default class Login extends React.Component {
         this.onButtonPressed = this.onButtonPressed.bind(this)
     };
 
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(user => {
+            this.props.navigation.navigate(user ? 'MainView' : 'Login')
+        })
+    }
+
     async Login() {
         try {
             await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)

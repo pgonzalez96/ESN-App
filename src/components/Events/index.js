@@ -1,5 +1,6 @@
 import React from 'react';
 import * as firebase from 'firebase';
+import { List, ListItem } from 'react-native-elements';
 import {StyleSheet, Text, View} from 'react-native';
 
 let events = [];
@@ -10,38 +11,62 @@ export default class Events extends React.Component {
         header: null
     }
 
-    getEvents() {
-        let rootRef = firebase.database().ref();
-        let users = rootRef.child('users');
-        let name2;
-        users.once('value').then(snapshot => {
-            snapshot.forEach(function (event) {
-                //console.log(event.val().name);
-                name2 = event.val().name;
-                console.log(name2);
-            })
-
-        })
-
-    }
-
     constructor(props) {
         super(props);
         this.state = {
-            name: []
+            loading: true,
+            currentUser: null
         }
-        this.getEvents();
 
     };
+
+    getEvents() {
+        let rootRef = firebase.database().ref();
+        let ref = rootRef.child('events');
+        ref.orderByChild('date').once('value').then(snapshot => {
+            snapshot.forEach(function (event) {
+                events.push(event.val())
+            })
+            this.setState({
+                loading: false
+            })
+        })
+
+
+    }
+
+     componentDidMount() {
+        if (events.length === 0) {
+            this.getEvents();
+        }
+        else {
+            this.setState({
+                loading: false
+            })
+        }
+     }
+
+
+
 
 
 
     render() {
-        //this.getEvents()
+        if (this.state.loading) {
+            return <Text>Loading...</Text>
+        }
         return (
-            <View style={styles.container}>
-                <Text>Events view</Text>
-            </View>
+            <List containerStyle={{marginBottom: 30}}>
+                {
+                    events.map((e) => (
+                        <ListItem
+                            key={e.name}
+                            title={e.name}
+                            subtitle={e.date}
+                        />
+                    ))
+                }
+            </List>
         );
     }
 }

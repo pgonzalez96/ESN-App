@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert} from 
 import * as DrawerNavigator from 'react-navigation';
 import Events from '../Events';
 import Login from '../Login';
+import * as firebase from "firebase";
 
 
 export default class MainView extends React.Component {
@@ -15,6 +16,11 @@ export default class MainView extends React.Component {
         super(props);
         this.state = {}
     };
+
+    componentDidMount() {
+        const { currentUser } = firebase.auth()
+        console.log(currentUser)
+    }
 
 
     render() {
