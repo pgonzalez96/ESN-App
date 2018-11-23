@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet} from 'react-native';
 import * as DrawerNavigator from 'react-navigation';
 import Events from '../Events';
-import Login from '../Login';
+import EventInfo from '../EventInfo';
 import * as firebase from "firebase";
 
 
@@ -17,15 +17,15 @@ export default class MainView extends React.Component {
         this.state = {}
     };
 
-    componentDidMount() {
+    /*componentDidMount() {
         const { currentUser } = firebase.auth()
         console.log(currentUser)
-    }
+    }*/
 
 
     render() {
         return (
-            <MyApp/>
+            <MyApp screenProps={{ rootNavigation: this.props.navigation }}/>
         );
     }
 }
@@ -37,19 +37,11 @@ const MyApp = DrawerNavigator.createDrawerNavigator({
     },
 
     Settings: {
-      screen: Login
+      screen: EventInfo
     }
 })
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
 
-});
 
 
 

@@ -4,7 +4,9 @@ import Login from './src/components/Login';
 import SignUp from './src/components/SignUp';
 import Firebase from './src/api';
 import MainView from './src/components/MainView';
-import * as firebase from 'firebase'
+import EventInfo from './src/components/EventInfo';
+import Events from './src/components/Events';
+import * as firebase from 'firebase';
 
 export default class App extends React.Component {
 
@@ -21,7 +23,7 @@ export default class App extends React.Component {
 
     getInitialView() {
         firebase.auth().onAuthStateChanged((user) => {
-            let initialView = user ? 'Signup' : 'Login'
+            let initialView = user ? 'MainView' : 'Login'
             this.setState({
                 userLoaded: true,
                 initialView
@@ -32,7 +34,7 @@ export default class App extends React.Component {
     render() {
         if (!this.state.userLoaded) {
             return (
-                <AppStackNavigator/>
+                <AppStackNavigator navigation={this.props.navigation}/>
             );
         }
 
@@ -46,7 +48,11 @@ export default class App extends React.Component {
 const AppStackNavigator = createStackNavigator({
     Login: Login,
     SignUp: SignUp,
-    MainView: MainView
+    MainView: MainView,
+    Events: Events,
+    EventInfo: EventInfo
+
 
 })
+
 

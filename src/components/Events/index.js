@@ -1,7 +1,7 @@
 import React from 'react';
 import * as firebase from 'firebase';
-import { List, ListItem } from 'react-native-elements';
-import {StyleSheet, Text, View} from 'react-native';
+import {ListItem} from 'react-native-elements';
+import {TouchableOpacity, Text, FlatList, StyleSheet} from 'react-native';
 
 let events = [];
 
@@ -17,6 +17,9 @@ export default class Events extends React.Component {
             loading: true,
             currentUser: null
         }
+
+        this.onEventPressed = this.onEventPressed.bind(this)
+
 
     };
 
@@ -46,9 +49,12 @@ export default class Events extends React.Component {
         }
      }
 
-
-
-
+     onEventPressed(name) {
+         this.props.screenProps.rootNavigation.navigate('EventInfo',
+             {
+                 nameEvent: name,
+             });
+     }
 
 
     render() {
@@ -56,31 +62,33 @@ export default class Events extends React.Component {
             return <Text>Loading...</Text>
         }
         return (
-            <List containerStyle={{marginBottom: 30}}>
-                {
-                    events.map((e) => (
+            events.map((e) => (
                         <ListItem
                             key={e.name}
                             title={e.name}
                             subtitle={e.date}
+                            onPress={() => this.onEventPressed(e.name)}
                         />
-                    ))
-                }
-            </List>
+            ))
+
         );
     }
 }
 
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
+    button: {
         alignItems: 'center',
-        justifyContent: 'center',
-    },
+        backgroundColor: '#0d47a1',
+        marginTop: 15,
+        padding: 20,
+        borderRadius: 25,
+        margin: 40,
+
+    }
 
 });
+
+
 
 
 
