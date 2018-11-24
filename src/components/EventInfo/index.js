@@ -16,8 +16,10 @@ export default class EventInfo extends React.Component {
             place: '',
             time: '',
             lat: '',
-            lng: ''
+            lng: '',
         }
+
+        this.onAddressClicked = this.onAddressClicked.bind(this)
     };
 
     componentDidMount() {
@@ -35,16 +37,24 @@ export default class EventInfo extends React.Component {
                 time: snapshot.val().time
             })
             Geocoder.init('AIzaSyDDIEZf8ns_KZkfcZUwh0R5n5lErf-rk1c'); // use a valid API key
-            Geocoder.from(this.state.address + "" + this.state.city)
+            Geocoder.from(this.state.address + " " + this.state.city)
                 .then(json => {
-                    let location = json.results[0].geometry.location;
                     let lat = json.results[0].geometry.location.lat;
                     let lng = json.results[0].geometry.location.lng;
-                    console.log(lat);
-                    console.log(lng);
-                    console.log(location);
+                    this.setState({
+                        lat: lat,
+                        lng: lng
+                    })
                 }).catch(error => console.warn(error))
         })
+    }
+
+    onAddressClicked() {
+        this.props.navigation.navigate('Maps',
+            {
+                lat: this.state.lat,
+                lng: this.state.lng
+            });
     }
 
     render() {
@@ -59,16 +69,9 @@ export default class EventInfo extends React.Component {
                 <Text>Address: {this.state.address}</Text>
                 <Text>City: {this.state.city}</Text>
                 <Text>Country: {this.state.country}</Text>
-                <MapView style={styles.map} initialRegion={{
-                    latitude:this.state.lat,
-                    longitude:this.state.lng,
-                    latitudeDelta: 1,
-                    longitudeDelta: 1
-                }}>
-                </MapView>
-                );
-            }
-                }
+                <Text
+                    onPress={this.onAddressClicked}
+                    style={styles.address}>Look for the address in the map</Text>
             </View>
         );
     }
@@ -82,6 +85,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+
+    address: {
+        color: '#212121',
+        textDecorationLine: 'underline'
+    },
+
 
 });
 

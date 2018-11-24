@@ -6,6 +6,7 @@ import Firebase from './src/api';
 import MainView from './src/components/MainView';
 import EventInfo from './src/components/EventInfo';
 import Events from './src/components/Events';
+import Maps from './src/components/Maps';
 import * as firebase from 'firebase';
 
 export default class App extends React.Component {
@@ -50,7 +51,8 @@ const AppStackNavigator = createStackNavigator({
     SignUp: SignUp,
     MainView: MainView,
     Events: Events,
-    EventInfo: EventInfo
+    EventInfo: EventInfo,
+    Maps: Maps
 
 
 })
