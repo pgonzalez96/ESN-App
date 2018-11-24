@@ -1,6 +1,7 @@
 import React from 'react';
 import * as firebase from 'firebase';
 import {StyleSheet, Text, View} from 'react-native';
+import {MapView} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 export default class EventInfo extends React.Component {
 
@@ -34,17 +35,16 @@ export default class EventInfo extends React.Component {
                 time: snapshot.val().time
             })
             Geocoder.init('AIzaSyDDIEZf8ns_KZkfcZUwh0R5n5lErf-rk1c'); // use a valid API key
-
             Geocoder.from(this.state.address + "" + this.state.city)
                 .then(json => {
-                    //                                                                          var location = json.results[0].geometry.location;
-                    console.log(json);
-                }).catch(error => console.warn(error));
+                    let location = json.results[0].geometry.location;
+                    let lat = json.results[0].geometry.location.lat;
+                    let lng = json.results[0].geometry.location.lng;
+                    console.log(lat);
+                    console.log(lng);
+                    console.log(location);
+                }).catch(error => console.warn(error))
         })
-
-
-
-
     }
 
     render() {
@@ -59,8 +59,17 @@ export default class EventInfo extends React.Component {
                 <Text>Address: {this.state.address}</Text>
                 <Text>City: {this.state.city}</Text>
                 <Text>Country: {this.state.country}</Text>
+                <MapView style={styles.map} initialRegion={{
+                    latitude:this.state.lat,
+                    longitude:this.state.lng,
+                    latitudeDelta: 1,
+                    longitudeDelta: 1
+                }}>
+                </MapView>
+                );
+            }
+                }
             </View>
-
         );
     }
 }
