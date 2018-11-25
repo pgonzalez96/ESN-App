@@ -1,8 +1,10 @@
 import React from 'react';
 import * as firebase from 'firebase';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {MapView} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
+
+let button, buttonStyle;
 export default class EventInfo extends React.Component {
 
     constructor(props) {
@@ -17,13 +19,25 @@ export default class EventInfo extends React.Component {
             time: '',
             lat: '',
             lng: '',
+            button: '',
+            buttonStyle: '',
+            loading: 0
         }
 
-        this.onAddressClicked = this.onAddressClicked.bind(this)
+        this.onAddressClicked = this.onAddressClicked.bind(this);
+        this.onButtonPressed = this.onButtonPressed.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.bookedEvent = this.bookedEvent.bind(this)
     };
 
+
+    bookedEvent() {
+
+    }
+
     componentDidMount() {
-        const name = this.props.navigation.getParam('nameEvent', 'NO-Name');
+        let name = this.props.navigation.getParam('nameEvent', 'NO-Name');
+        const { currentUser } = firebase.auth();
         let rootRef = firebase.database().ref();
         let ref = rootRef.child('events/'+name);
         ref.once('value').then(snapshot => {
@@ -46,7 +60,49 @@ export default class EventInfo extends React.Component {
                         lng: lng
                     })
                 }).catch(error => console.warn(error))
-        })
+        });
+        let email = currentUser.providerData[0].email;
+        rootRef = firebase.database().ref();
+        ref = rootRef.child('users/');
+        let exist = 0;
+        ref.once('value').then(snapshot => {
+            snapshot.forEach(user => {
+                if(user.val().email === email) {
+                        if (user.val().events) {
+                            let us = ref.child(user.key + '/events');
+                            us.once('value').then(snapshot => {
+                                snapshot.forEach(event => {
+                                    if (event.val() === name) {
+                                        ++exist;
+                                        button = 'Event booked';
+                                        buttonStyle = 'buttonBooked';
+                                    }
+                                });
+                                if (exist === 0) {
+                                    button = 'Book the event';
+                                    buttonStyle = 'buttonNotBooked';
+                                }
+                                this.setState({
+                                    button: button,
+                                    buttonStyle: buttonStyle
+                                })
+                            })
+                        }
+                        else {
+                            button= 'Book the event';
+                            buttonStyle= 'buttonNotBooked';
+                            this.setState({
+                                button: button,
+                                buttonStyle: buttonStyle
+                            })
+                        }
+                }
+
+
+            })
+        });
+
+
     }
 
     onAddressClicked() {
@@ -57,7 +113,64 @@ export default class EventInfo extends React.Component {
             });
     }
 
+
+
+    onButtonPressed() {
+        const { currentUser } = firebase.auth();
+        let email = currentUser.providerData[0].email;
+        let rootRef = firebase.database().ref();
+        let ref = rootRef.child('users/');
+        let button = '';
+        let style = '';
+        let exist = 0;
+        const name = this.state.name;
+        ref.once('value').then(snapshot => {
+            snapshot.forEach(user => {
+                if(user.val().email === email) {
+                    if (user.val().events) {
+                        let us = ref.child(user.key+'/events');
+                        us.once('value').then(snapshot => {
+                            snapshot.forEach(event => {
+                                if (event.val() === name) {
+                                    ++exist;
+                                    let eve = us.child(event.key);
+                                    eve.remove();
+                                    button = 'Book the event';
+                                    buttonStyle = 'buttonNotBooked';
+                                }
+                            });
+                            if (exist === 0) {
+                                us.push(name);
+                                button = 'Event booked';
+                                buttonStyle = 'buttonBooked';
+                            }
+                            this.setState({
+                                button: button,
+                                buttonStyle: buttonStyle
+                            })
+                        })
+                    }
+                    else {
+                        button = 'Event booked';
+                        buttonStyle = 'buttonBooked';
+                        this.setState({
+                            button: button,
+                            buttonStyle: buttonStyle,
+                        });
+                        let us = ref.child(user.key+'/events');
+                        us.push(name)
+                    }
+                }
+
+            })
+        });
+
+
+
+    }
+
     render() {
+
 
         return (
             <View style={styles.container}>
@@ -72,6 +185,12 @@ export default class EventInfo extends React.Component {
                 <Text
                     onPress={this.onAddressClicked}
                     style={styles.address}>Look for the address in the map</Text>
+                <TouchableOpacity
+                    style={styles[this.state.buttonStyle]}
+                    onPress={this.onButtonPressed}
+                >
+                    <Text style={{color: '#fff', fontSize: 25}}>{this.state.button}</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -90,6 +209,26 @@ const styles = StyleSheet.create({
         color: '#212121',
         textDecorationLine: 'underline'
     },
+
+    buttonNotBooked: {
+        alignItems: 'center',
+        backgroundColor: '#0d47a1',
+        marginTop: 15,
+        padding: 20,
+        borderRadius: 25,
+        margin: 40,
+
+    },
+
+    buttonBooked: {
+        alignItems: 'center',
+        backgroundColor: '#0aa114',
+        marginTop: 15,
+        padding: 20,
+        borderRadius: 25,
+        margin: 40,
+
+    }
 
 
 });

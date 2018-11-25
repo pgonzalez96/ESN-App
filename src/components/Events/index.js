@@ -1,7 +1,7 @@
 import React from 'react';
 import * as firebase from 'firebase';
 import {ListItem} from 'react-native-elements';
-import {TouchableOpacity, Text, FlatList, StyleSheet} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 
 let events = [];
 
