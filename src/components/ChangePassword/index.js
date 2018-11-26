@@ -26,29 +26,26 @@ export default class ChangePassword extends React.Component {
 
 
     onButtonPressed() {
-        firebase.auth().currentUser.reauthenticateWithCredential(
+        let promise = firebase.auth().currentUser.reauthenticateWithCredential(
             firebase.auth.EmailAuthProvider.credential(
                 firebase.auth().currentUser.email,
                 this.state.oldPassword
             )
         );
-        if (this.state.password !== this.state.password2) {
-            Alert.alert('Error','Passwords are not equals.');
-        }
-        else {
-            let user = firebase.auth().currentUser;
-            user.updatePassword(this.state.newPassword).then(function() {
-                console.log("password updated succesfully")
-            }).catch(function(error) {
-                console.log(error)
-            })
+        if (promise){
+            if (this.state.password !== this.state.password2) {
+                Alert.alert('Error','Passwords are not equals.');
+            }
+            else {
+                let user = firebase.auth().currentUser;
+                user.updatePassword(this.state.newPassword).then(function() {
+                    console.log("password updated successfully")
+                }).catch(function(error) {
+                    console.log(error)
+                })
+            }
         }
     }
-
-
-
-
-
 
     render() {
         return (
