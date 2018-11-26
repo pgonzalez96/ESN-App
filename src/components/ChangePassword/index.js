@@ -26,7 +26,7 @@ export default class ChangePassword extends React.Component {
 
 
     onButtonPressed() {
-        let promise = firebase.auth().currentUser.reauthenticateWithCredential(
+        let promise = firebase.auth().currentUser.reauthenticateAndRetrieveDataWithCredential(
             firebase.auth.EmailAuthProvider.credential(
                 firebase.auth().currentUser.email,
                 this.state.oldPassword
@@ -39,9 +39,10 @@ export default class ChangePassword extends React.Component {
             else {
                 let user = firebase.auth().currentUser;
                 user.updatePassword(this.state.newPassword).then(function() {
-                    console.log("password updated successfully")
+                    Alert.alert('Done!', 'password updated successfully');
+                    this.props.navigation.navigate('MainView');
                 }).catch(function(error) {
-                    console.log(error)
+                    Alert.alert('Error!', error)
                 })
             }
         }
@@ -76,9 +77,12 @@ export default class ChangePassword extends React.Component {
                     <TouchableOpacity
                         style={styles.button}
                         onPress={this.onButtonPressed}
+
                     >
                         <Text style={{color: '#fff', fontSize: 25}}>Change Password</Text>
                     </TouchableOpacity>
+
+
                 </View>
 
 
