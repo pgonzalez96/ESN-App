@@ -3,9 +3,15 @@ import * as firebase from 'firebase';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {MapView} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
+import {Icon, Header, Container, Left} from 'native-base'
+
 
 let button, buttonStyle;
 export default class EventInfo extends React.Component {
+
+    static navigationOptions = {
+        header: null
+    }
 
     constructor(props) {
         super(props);
@@ -27,13 +33,14 @@ export default class EventInfo extends React.Component {
         this.onAddressClicked = this.onAddressClicked.bind(this);
         this.onButtonPressed = this.onButtonPressed.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.bookedEvent = this.bookedEvent.bind(this)
+        this.onIconPressed = this.onIconPressed.bind(this);
     };
 
-
-    bookedEvent() {
-
+    onIconPressed() {
+        this.props.navigation.openDrawer();
     }
+
+
 
     componentDidMount() {
         let name = this.props.navigation.getParam('nameEvent', 'NO-Name');
@@ -120,8 +127,6 @@ export default class EventInfo extends React.Component {
         let email = currentUser.providerData[0].email;
         let rootRef = firebase.database().ref();
         let ref = rootRef.child('users/');
-        let button = '';
-        let style = '';
         let exist = 0;
         const name = this.state.name;
         ref.once('value').then(snapshot => {
@@ -173,25 +178,34 @@ export default class EventInfo extends React.Component {
 
 
         return (
-            <View style={styles.container}>
-                <Text>DETAILS:</Text>
-                <Text>Name: {this.state.name}</Text>
-                <Text>Place: {this.state.place}</Text>
-                <Text>Date: {this.state.date}</Text>
-                <Text>Time: {this.state.time}</Text>
-                <Text>Address: {this.state.address}</Text>
-                <Text>City: {this.state.city}</Text>
-                <Text>Country: {this.state.country}</Text>
-                <Text
-                    onPress={this.onAddressClicked}
-                    style={styles.address}>Look for the address in the map</Text>
-                <TouchableOpacity
-                    style={styles[this.state.buttonStyle]}
-                    onPress={this.onButtonPressed}
-                >
-                    <Text style={{color: '#fff', fontSize: 25}}>{this.state.button}</Text>
-                </TouchableOpacity>
-            </View>
+            <Container>
+                <Header style={styles.header}>
+                    <Left>
+                        <Icon name="ios-menu" onPress={this.onIconPressed}
+                              style={styles.icon}
+                        />
+                    </Left>
+                </Header>
+                <View style={styles.container}>
+                    <Text>DETAILS:</Text>
+                    <Text>Name: {this.state.name}</Text>
+                    <Text>Place: {this.state.place}</Text>
+                    <Text>Date: {this.state.date}</Text>
+                    <Text>Time: {this.state.time}</Text>
+                    <Text>Address: {this.state.address}</Text>
+                    <Text>City: {this.state.city}</Text>
+                    <Text>Country: {this.state.country}</Text>
+                    <Text
+                        onPress={this.onAddressClicked}
+                        style={styles.address}>Look for the address in the map</Text>
+                    <TouchableOpacity
+                        style={styles[this.state.buttonStyle]}
+                        onPress={this.onButtonPressed}
+                    >
+                        <Text style={{color: '#fff', fontSize: 25}}>{this.state.button}</Text>
+                    </TouchableOpacity>
+                </View>
+            </Container>
         );
     }
 }
@@ -228,8 +242,18 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         margin: 40,
 
-    }
+    },
+    icon: {
+        position: 'absolute',
+        flex: 1,
+        backgroundColor: '#8e8e8e'
 
+    },
+    header: {
+        backgroundColor: '#8e8e8e',
+        justifyContent: 'flex-start',
+
+    },
 
 });
 

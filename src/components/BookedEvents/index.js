@@ -27,6 +27,7 @@ export default class BookedEvents extends React.Component {
 
 
     componentDidMount() {
+        console.log("hola");
         bookedEvents = [];
         const { currentUser } = firebase.auth();
         let email = currentUser.providerData[0].email;
