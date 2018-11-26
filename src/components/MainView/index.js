@@ -2,8 +2,8 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import * as DrawerNavigator from 'react-navigation';
 import Events from '../Events';
-import EventInfo from '../EventInfo';
-import * as firebase from "firebase";
+import BookedEvents from '../BookedEvents';
+
 
 
 export default class MainView extends React.Component {
@@ -25,6 +25,7 @@ export default class MainView extends React.Component {
 
     render() {
         return (
+
             <MyApp screenProps={{ rootNavigation: this.props.navigation }}/>
         );
     }
@@ -32,12 +33,12 @@ export default class MainView extends React.Component {
 
 const MyApp = DrawerNavigator.createDrawerNavigator({
 
-    Home: {
+    Events: {
         screen: Events
     },
 
-    Settings: {
-      screen: EventInfo
+    BookedEvents: {
+      screen: BookedEvents
     }
 })
 

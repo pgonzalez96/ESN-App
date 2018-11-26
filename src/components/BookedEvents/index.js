@@ -2,11 +2,11 @@ import React from 'react';
 import * as firebase from 'firebase';
 import {ListItem} from 'react-native-elements';
 import {Text, StyleSheet, View} from 'react-native';
-import {Icon, Header, Container, Left, Content} from 'native-base'
+import {Icon, Header, Container, Left} from 'native-base'
 
-let events = [];
+let bookedEvents = [];
 
-export default class Events extends React.Component {
+export default class BookedEvents extends React.Component {
 
     static navigationOptions = {
         header: null
@@ -16,7 +16,7 @@ export default class Events extends React.Component {
         super(props);
         this.state = {
             loading: true,
-            currentUser: null
+            notEvents: true
         }
 
         this.onEventPressed = this.onEventPressed.bind(this);
@@ -25,27 +25,39 @@ export default class Events extends React.Component {
 
     };
 
-    getEvents() {
-        let rootRef = firebase.database().ref();
-        let ref = rootRef.child('events');
-        ref.orderByChild('date').once('value').then(snapshot => {
-            if(snapshot.val()) {
-                snapshot.forEach(function (event) {
-                    events.push(event.val())
-                })
-                this.setState({
-                    loading: false
-                })
-            }
-
-        })
-
-
-    }
 
     componentDidMount() {
-        events=[];
-        this.getEvents();
+        bookedEvents = [];
+        const { currentUser } = firebase.auth();
+        let email = currentUser.providerData[0].email;
+        let rootRef = firebase.database().ref();
+        let ref = rootRef.child('users/');
+        ref.once('value').then(snapshot => {
+            snapshot.forEach(user => {
+                if(user.val().email === email) {
+                    if (user.val().events) {
+                        this.setState({
+                            notEvents: false
+                        });
+                        let us = ref.child(user.key + '/events');
+                        us.once('value').then(snapshot => {
+                            snapshot.forEach(bEvent => {
+                                rootRef = firebase.database().ref();
+                                ref = rootRef.child('/events/'+bEvent.val());
+                                ref.once('value').then(event => {
+                                    bookedEvents.push(event.val());
+                                    this.setState({
+                                        loading: false
+                                    })
+                                })
+
+                            })
+                        })
+                    }
+                }
+
+            })
+        });
 
     }
 
@@ -62,7 +74,7 @@ export default class Events extends React.Component {
 
 
     render() {
-        if (this.state.loading) {
+        if (this.state.loading && this.state.notEvents) {
             return (
                 <Container>
                     <Header style={styles.header}>
@@ -72,12 +84,25 @@ export default class Events extends React.Component {
                             />
                         </Left>
                     </Header>
-                    <Text>There aren't available events.</Text>
+                    <Text>You haven't booked any event.</Text>
                 </Container>
             );
         }
-        else {
-
+        if(this.state.notEvents) {
+            return (
+                <Container>
+                    <Header style={styles.header}>
+                        <Left>
+                            <Icon name="ios-menu" onPress={this.onIconPressed}
+                                  style = {styles.icon}
+                            />
+                        </Left>
+                    </Header>
+                    <Text>Loading...</Text>
+                </Container>
+            );        }
+        else
+        {
             return (
                 <Container>
                     <Header style={styles.header}>
@@ -89,7 +114,7 @@ export default class Events extends React.Component {
                     </Header>
 
                     {
-                        events.map((e) => (
+                        bookedEvents.map((e) => (
                             <ListItem
                                 key={e.name}
                                 title={e.name}
@@ -101,7 +126,6 @@ export default class Events extends React.Component {
                 </Container>
             );
         }
-
     }
 }
 
