@@ -7,6 +7,8 @@ import MainView from './src/components/MainView';
 import EventInfo from './src/components/EventInfo';
 import Events from './src/components/Events';
 import BookedEvents from './src/components/BookedEvents';
+import DeleteAccount from './src/components/DeleteAccount';
+import ChangePassword from './src/components/ChangePassword';
 import Maps from './src/components/Maps';
 import * as firebase from 'firebase';
 
@@ -54,7 +56,9 @@ const AppStackNavigator = createStackNavigator({
     Events: Events,
     EventInfo: EventInfo,
     Maps: Maps,
-    BookedEvents: BookedEvents
+    BookedEvents: BookedEvents,
+    DeleteAccount: DeleteAccount,
+    ChangePassword: ChangePassword
 
 
 })

@@ -3,6 +3,8 @@ import {StyleSheet} from 'react-native';
 import * as DrawerNavigator from 'react-navigation';
 import Events from '../Events';
 import BookedEvents from '../BookedEvents';
+import DeleteAccount from '../DeleteAccount';
+import ChangePassword from '../ChangePassword';
 
 
 
@@ -37,8 +39,16 @@ const MyApp = DrawerNavigator.createDrawerNavigator({
         screen: Events
     },
 
-    BookedEvents: {
+    Booked_Events: {
       screen: BookedEvents
+    },
+
+    Change_Password: {
+      screen: ChangePassword
+    },
+
+    Delete_Account: {
+        screen: DeleteAccount
     }
 })
 

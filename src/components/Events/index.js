@@ -109,14 +109,14 @@ export default class Events extends React.Component {
 const styles = StyleSheet.create({
     icon: {
         position: 'absolute',
-        flex: 1,
-        backgroundColor: '#8e8e8e'
-
+        backgroundColor: '#8e8e8e',
+        left: 0,
+        right: 0,
+        bottom: -23
     },
     header: {
         backgroundColor: '#8e8e8e',
         justifyContent: 'flex-start',
-
     }
 
 

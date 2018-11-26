@@ -27,7 +27,6 @@ export default class BookedEvents extends React.Component {
 
 
     componentDidMount() {
-        console.log("hola");
         bookedEvents = [];
         const { currentUser } = firebase.auth();
         let email = currentUser.providerData[0].email;
@@ -134,8 +133,10 @@ export default class BookedEvents extends React.Component {
 const styles = StyleSheet.create({
     icon: {
         position: 'absolute',
-        flex: 1,
-        backgroundColor: '#8e8e8e'
+        backgroundColor: '#8e8e8e',
+        left: 0,
+        right: 0,
+        bottom: -23
 
     },
     header: {

@@ -3,15 +3,12 @@ import * as firebase from 'firebase';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {MapView} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
-import {Icon, Header, Container, Left} from 'native-base'
 
 
 let button, buttonStyle;
 export default class EventInfo extends React.Component {
 
-    static navigationOptions = {
-        header: null
-    }
+
 
     constructor(props) {
         super(props);
@@ -33,12 +30,8 @@ export default class EventInfo extends React.Component {
         this.onAddressClicked = this.onAddressClicked.bind(this);
         this.onButtonPressed = this.onButtonPressed.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.onIconPressed = this.onIconPressed.bind(this);
     };
 
-    onIconPressed() {
-        this.props.navigation.openDrawer();
-    }
 
 
 
@@ -178,14 +171,7 @@ export default class EventInfo extends React.Component {
 
 
         return (
-            <Container>
-                <Header style={styles.header}>
-                    <Left>
-                        <Icon name="ios-menu" onPress={this.onIconPressed}
-                              style={styles.icon}
-                        />
-                    </Left>
-                </Header>
+
                 <View style={styles.container}>
                     <Text>DETAILS:</Text>
                     <Text>Name: {this.state.name}</Text>
@@ -205,7 +191,6 @@ export default class EventInfo extends React.Component {
                         <Text style={{color: '#fff', fontSize: 25}}>{this.state.button}</Text>
                     </TouchableOpacity>
                 </View>
-            </Container>
         );
     }
 }
@@ -243,17 +228,7 @@ const styles = StyleSheet.create({
         margin: 40,
 
     },
-    icon: {
-        position: 'absolute',
-        flex: 1,
-        backgroundColor: '#8e8e8e'
 
-    },
-    header: {
-        backgroundColor: '#8e8e8e',
-        justifyContent: 'flex-start',
-
-    },
 
 });
 
