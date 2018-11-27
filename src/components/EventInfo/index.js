@@ -3,6 +3,9 @@ import * as firebase from 'firebase';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {MapView} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Stars from 'react-native-stars'
+
 
 
 let button, buttonStyle;
@@ -24,7 +27,9 @@ export default class EventInfo extends React.Component {
             lng: '',
             button: '',
             buttonStyle: '',
-            loading: 0
+            loading: 0,
+            stars: 2.5,
+            before: false
         }
 
         this.onAddressClicked = this.onAddressClicked.bind(this);
@@ -101,6 +106,14 @@ export default class EventInfo extends React.Component {
 
             })
         });
+        let date = new Date().toLocaleDateString();
+        let year = date.substring(6,8);
+        let month = date.substring(0,2);
+        let day = date.substring(3,5);
+        console.log(year);
+        console.log(month);
+        console.log(day);
+
 
 
     }
@@ -184,6 +197,19 @@ export default class EventInfo extends React.Component {
                     <Text
                         onPress={this.onAddressClicked}
                         style={styles.address}>Look for the address in the map</Text>
+                    <Stars
+                        style={styles.stars}
+                        default={2.5}
+                        count={5}
+                        update={(val)=>{this.setState({stars: val})}}
+                        half={true}
+                        starSize={50}
+                        spacing={10}
+                        fullStar={<Icon name={'star'} size={40} style={[styles.myStarStyle]}/>}
+                        emptyStar={<Icon name={'star-outline'} size={40} style={[styles.myStarStyle, styles.myEmptyStarStyle]}/>}
+                        halfStar={<Icon name={'star-half'} size={40} style={[styles.myStarStyle]}/>}
+                    />
+                    <Text>{this.state.stars}</Text>
                     <TouchableOpacity
                         style={styles[this.state.buttonStyle]}
                         onPress={this.onButtonPressed}
@@ -228,6 +254,19 @@ const styles = StyleSheet.create({
         margin: 40,
 
     },
+    myStarStyle: {
+        color: 'yellow',
+        backgroundColor: 'transparent',
+        textShadowColor: 'black',
+        textShadowOffset: {width: 1, height: 1},
+        textShadowRadius: 2,
+
+    },
+    myEmptyStarStyle: {
+        color: 'white',
+    },
+
+
 
 
 });

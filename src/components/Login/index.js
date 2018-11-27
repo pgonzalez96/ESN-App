@@ -61,10 +61,13 @@ export default class Login extends React.Component {
                 >
                     <Text style={{color: '#fff', fontSize: 20}}>Sign in</Text>
                 </TouchableOpacity>
+                <Text
+                    onPress={() => this.props.navigation.navigate('RecoveryPassword')}
+                    style={styles.signup}> Forgotten password?</Text>
                 <Text style ={styles.text}>If you don't have an account,
                     <Text
                         onPress={() => this.props.navigation.navigate('SignUp')}
-                        style={styles.signup}>Sign up</Text>
+                        style={styles.signup}> Sign up</Text>
                 </Text>
             </View>
         );

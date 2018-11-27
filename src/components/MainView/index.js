@@ -5,6 +5,8 @@ import Events from '../Events';
 import BookedEvents from '../BookedEvents';
 import DeleteAccount from '../DeleteAccount';
 import ChangePassword from '../ChangePassword';
+import Logout from '../Logout';
+
 
 
 
@@ -49,6 +51,10 @@ const MyApp = DrawerNavigator.createDrawerNavigator({
 
     Delete_Account: {
         screen: DeleteAccount
+    },
+
+    Logout: {
+        screen: Logout
     }
 })
 

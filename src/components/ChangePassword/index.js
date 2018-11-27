@@ -16,6 +16,7 @@ export default class ChangePassword extends React.Component {
         }
         this.onButtonPressed = this.onButtonPressed.bind(this);
         this.onIconPressed = this.onIconPressed.bind(this);
+        this.reauthenticate = this.reauthenticate.bind(this);
 
 
     };
@@ -24,28 +25,29 @@ export default class ChangePassword extends React.Component {
         this.props.navigation.openDrawer();
     }
 
+    reauthenticate(oldPassword) {
+        let user = firebase.auth().currentUser;
+        let cred = firebase.auth.EmailAuthProvider.credential(
+            user.email, oldPassword);
+        return user.reauthenticateWithCredential(cred);
+    }
+
 
     onButtonPressed() {
-        let promise = firebase.auth().currentUser.reauthenticateAndRetrieveDataWithCredential(
-            firebase.auth.EmailAuthProvider.credential(
-                firebase.auth().currentUser.email,
-                this.state.oldPassword
-            )
-        );
-        if (promise){
-            if (this.state.password !== this.state.password2) {
-                Alert.alert('Error','Passwords are not equals.');
-            }
-            else {
+
+            this.reauthenticate(this.state.oldPassword).then(() => {
                 let user = firebase.auth().currentUser;
-                user.updatePassword(this.state.newPassword).then(function() {
-                    Alert.alert('Done!', 'password updated successfully');
-                    this.props.navigation.navigate('MainView');
-                }).catch(function(error) {
-                    Alert.alert('Error!', error)
-                })
-            }
-        }
+                if (this.state.newPassword !== this.state.newPassword2) {
+                    Alert.alert('Error','Passwords are not equals.');
+                }
+                user.updatePassword(this.state.newPassword).then(() => {
+                    Alert.alert('Done!','Password updated successfully.', [
+                        {text: 'OK', onPress: this.props.navigation.navigate('Events')},
+                    ])
+                }).catch((error) => {Alert.alert('Error!', error.toString())});
+            }).catch((error) => {Alert.alert('Error!', error.toString())});
+
+
     }
 
     render() {
@@ -117,7 +119,6 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 25,
         marginTop: 12,
-        marginLeft: 5,
     },
 
     button: {
