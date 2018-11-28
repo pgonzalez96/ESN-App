@@ -32,7 +32,8 @@ export default class EventInfo extends React.Component {
             before: false,
             voted: false,
             press: false,
-            average: 0
+            average: 0,
+            users: 0
         }
 
         this.onAddressClicked = this.onAddressClicked.bind(this);
@@ -205,7 +206,8 @@ export default class EventInfo extends React.Component {
                         }
                         else {
                             this.setState({
-                                average: snapshot.val().averages
+                                average: snapshot.val().averages,
+                                users: snapshot.val().votes
                             })
                         }
                     });
@@ -355,10 +357,12 @@ export default class EventInfo extends React.Component {
             usVoted.set(u);
             let av = rootRef.child('/averages');
             av.once('value').then(aver => {
-                let averFinal = (aver.val()+this.state.stars)/2;
+                let averFinal = (aver.val()+this.state.stars);
                 av.set(averFinal);
                 this.setState({
-                    average: averFinal
+                    average: averFinal,
+                    users: u
+
                 })
             })
         });
@@ -407,7 +411,7 @@ export default class EventInfo extends React.Component {
                     >
                         <Text style={{color: '#fff', fontSize: 25}}>Vote this event</Text>
                     </TouchableOpacity>
-                    <Text>Feedback: {this.state.average}/5 </Text>
+                    <Text>Feedback: {this.state.average/this.state.users}/5 </Text>
                 </View>);
         }
         else if (this.state.before && !this.state.voted) {
@@ -443,7 +447,7 @@ export default class EventInfo extends React.Component {
                     >
                         <Text style={{color: '#fff', fontSize: 25}}>Vote</Text>
                     </TouchableOpacity>
-                    <Text>Feedback: {this.state.average}/5 </Text>
+                    <Text>Feedback: {this.state.average/this.state.users}/5 </Text>
                 </View>
             );
         }
@@ -462,7 +466,7 @@ export default class EventInfo extends React.Component {
                         onPress={this.onAddressClicked}
                         style={styles.address}>Look for the address in the map</Text>
                     <Text style={styles.voted}>You have voted this event!</Text>
-                    <Text>Feedback: {this.state.average}/5 </Text>
+                    <Text>Feedback: {this.state.average/this.state.users}/5 </Text>
                 </View>
             );
         }
