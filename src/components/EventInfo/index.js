@@ -355,7 +355,7 @@ export default class EventInfo extends React.Component {
             usVoted.set(u);
             let av = rootRef.child('/averages');
             av.once('value').then(aver => {
-                let averFinal = (aver.val()+this.state.stars)/u;
+                let averFinal = (aver.val()+this.state.stars)/2;
                 av.set(averFinal);
                 this.setState({
                     average: averFinal
