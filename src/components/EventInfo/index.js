@@ -1,6 +1,6 @@
 import React from 'react';
 import * as firebase from 'firebase';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native';
 import {MapView} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -31,7 +31,8 @@ export default class EventInfo extends React.Component {
             stars: 2.5,
             before: false,
             voted: false,
-            press: false
+            press: false,
+            average: 0
         }
 
         this.onAddressClicked = this.onAddressClicked.bind(this);
@@ -121,11 +122,24 @@ export default class EventInfo extends React.Component {
                 place: snapshot.val().place,
                 time: snapshot.val().time
             })
+            let currentYear, currentMonth, currentDay;
             let date = new Date().toLocaleDateString();
-            let currentYear = date.substring(6,8);
-            currentYear = Number(currentYear)+2000;
-            let currentMonth = Number(date.substring(0,2));
-            let currentDay = Number(date.substring(3,5));
+
+
+            if (Platform.OS === 'ios') {
+                currentDay = Number(date.substring(0,2));
+                currentMonth = Number(date.substring(3,5));
+                currentYear = Number(date.substring(6,10));
+
+            }
+
+            else {
+                currentYear = date.substring(6,8);
+                currentYear = Number(currentYear)+2000;
+                currentMonth = Number(date.substring(0,2))
+                currentDay = Number(date.substring(3,5));
+
+            }
             let finalDate = this.getDate(this.state.date);
             let year = Number(finalDate.substring(4,8));
             let month = Number(finalDate.substring(2,4));
@@ -154,14 +168,14 @@ export default class EventInfo extends React.Component {
                 }
             }
             if (this.state.before) {
-                rootRef = firebase.database().ref();
-                ref = rootRef.child('users/');
+                let rootRef2 = firebase.database().ref();
+                let ref2 = rootRef2.child('users/');
                 let email = currentUser.providerData[0].email;
-                ref.once('value').then(snapshot => {
+                ref2.once('value').then(snapshot => {
                     snapshot.forEach(user => {
                         if (user.val().email === email) {
                             if (user.val().votedEvents) {
-                                let usF = ref.child(user.key+'/votedEvents');
+                                let usF = ref2.child(user.key+'/votedEvents');
                                 usF.once('value').then(snap => {
                                     snap.forEach(eve => {
                                         if (eve.val() === this.state.name) {
@@ -170,18 +184,7 @@ export default class EventInfo extends React.Component {
                                             })
                                         }
                                     })
-                                    if (!this.state.voted) {
-                                        rootRef = firebase.database().ref();
-                                        ref = rootRef.child('events/'+this.state.name);
-                                        ref.once('value').then(snapshot => {
-                                            if (!snapshot.val().average) {
-                                                let av = rootRef.child('events/'+this.state.name+'/averages');
-                                                av.set(0);
-                                                let usVoted = rootRef.child('events/'+this.state.name+'/votes');
-                                                usVoted.set(0);
-                                            }
-                                        });
-                                    }
+
                                 })
 
                             }
@@ -190,6 +193,23 @@ export default class EventInfo extends React.Component {
                         }
                     })
                 });
+                    rootRef = firebase.database().ref();
+                    ref = rootRef.child('events/'+this.state.name);
+                    ref.once('value').then(snapshot => {
+                        if (!snapshot.val().averages) {
+
+                            let av = rootRef.child('events/'+this.state.name+'/averages');
+                            av.set(0);
+                            let usVoted = rootRef.child('events/'+this.state.name+'/votes');
+                            usVoted.set(0);
+                        }
+                        else {
+                            this.setState({
+                                average: snapshot.val().averages
+                            })
+                        }
+                    });
+
 
 
             }
@@ -337,6 +357,9 @@ export default class EventInfo extends React.Component {
             av.once('value').then(aver => {
                 let averFinal = (aver.val()+this.state.stars)/u;
                 av.set(averFinal);
+                this.setState({
+                    average: averFinal
+                })
             })
         });
         const { currentUser } = firebase.auth();
@@ -384,6 +407,7 @@ export default class EventInfo extends React.Component {
                     >
                         <Text style={{color: '#fff', fontSize: 25}}>Vote this event</Text>
                     </TouchableOpacity>
+                    <Text>Feedback: {this.state.average}/5 </Text>
                 </View>);
         }
         else if (this.state.before && !this.state.voted) {
@@ -419,6 +443,7 @@ export default class EventInfo extends React.Component {
                     >
                         <Text style={{color: '#fff', fontSize: 25}}>Vote</Text>
                     </TouchableOpacity>
+                    <Text>Feedback: {this.state.average}/5 </Text>
                 </View>
             );
         }
@@ -436,7 +461,8 @@ export default class EventInfo extends React.Component {
                     <Text
                         onPress={this.onAddressClicked}
                         style={styles.address}>Look for the address in the map</Text>
-                    <Text>You have voted this event!</Text>
+                    <Text style={styles.voted}>You have voted this event!</Text>
+                    <Text>Feedback: {this.state.average}/5 </Text>
                 </View>
             );
         }
@@ -520,6 +546,13 @@ const styles = StyleSheet.create({
     myEmptyStarStyle: {
         color: 'white',
     },
+
+    voted: {
+        fontSize: 20,
+        color: '#a1120a',
+
+
+    }
 
 
 

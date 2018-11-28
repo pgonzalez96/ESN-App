@@ -25,7 +25,7 @@ export default class RecoveryPassword extends React.Component {
         let auth = firebase.auth();
         auth.sendPasswordResetEmail(this.state.email).then(() => {
             Alert.alert('Done!', 'An email has been sent!', [
-                {text: 'OK', onPress: this.props.navigation.navigate('Login')}
+                {text: 'OK', onPress: () => this.props.navigation.navigate('Login')}
                 ])
         }).catch((error) => {
                 Alert.alert('Error!',error.toString())

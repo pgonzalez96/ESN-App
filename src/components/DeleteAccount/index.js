@@ -34,7 +34,7 @@ export default class DeleteAccount extends React.Component {
                     }).catch(function(error) {
                     })
                     Alert.alert('Done!','Your account has been deleted.', [
-                        {text: 'OK', onPress: this.props.screenProps.rootNavigation.navigate('Login')},
+                        {text: 'OK', onPress: () => this.props.screenProps.rootNavigation.navigate('Login')},
                     ])
                 }
             })

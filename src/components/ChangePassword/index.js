@@ -40,11 +40,14 @@ export default class ChangePassword extends React.Component {
                 if (this.state.newPassword !== this.state.newPassword2) {
                     Alert.alert('Error','Passwords are not equals.');
                 }
-                user.updatePassword(this.state.newPassword).then(() => {
-                    Alert.alert('Done!','Password updated successfully.', [
-                        {text: 'OK', onPress: this.props.navigation.navigate('Events')},
-                    ])
-                }).catch((error) => {Alert.alert('Error!', error.toString())});
+                else {
+                    user.updatePassword(this.state.newPassword).then(() => {
+                        Alert.alert('Done!','Password updated successfully.', [
+                            {text: 'OK', onPress: () => this.props.navigation.navigate('Events')},
+                        ])
+                    }).catch((error) => {Alert.alert('Error!', error.toString())});
+                }
+
             }).catch((error) => {Alert.alert('Error!', error.toString())});
 
 
